@@ -1,0 +1,122 @@
+
+#include <stdio.h>
+
+#define N 10
+
+void display(int arr[])
+{
+    int i;
+    printf("[");
+    for(i = 0; i < N; i++)
+    {
+        printf("%d", arr[i]);
+        if(i < N-1)
+            printf(" ");
+    }
+    printf("]\n");
+}
+
+void reverse(int arr[], int start, int end)
+{
+    int temp;
+    while(start < end)
+    {
+        temp = arr[start];
+        arr[start] = arr[end];
+        arr[end] = temp;
+        start++;
+        end--;
+    }
+}
+
+int main()
+{
+    int arr[N], i, k, choice, rotations, r;
+    int originalSum = 0, rotatedSum = 0;
+
+    printf("Enter 10 numbers: ");
+    for(i = 0; i < N; i++)
+    {
+        scanf("%d", &arr[i]);
+        originalSum += arr[i];
+    }
+
+    printf("Enter number of rotations: ");
+    scanf("%d", &rotations);
+
+    for(r = 1; r <= rotations; r++)
+    {
+        printf("\nRotation %d\n", r);
+
+        printf("Rotate Left (L) / Right (R): ");
+        char direction;
+        scanf(" %c", &direction);
+
+        if(direction != 'L' && direction != 'l' &&
+           direction != 'R' && direction != 'r')
+        {
+            printf("Invalid direction!\n");
+            r--;
+            continue;
+        }
+
+        printf("By positions: ");
+        scanf("%d", &k);
+
+        if(k < 0 || k >= N)
+        {
+            printf("Invalid K! Enter K between 0 and 9.\n");
+            r--;
+            continue;
+        }
+
+        printf("Original: ");
+        display(arr);
+
+        if(k == 0)
+        {
+            printf("No rotation required.\n");
+        }
+        else if(direction == 'L' || direction == 'l')
+        {
+            reverse(arr, 0, k-1);
+            printf("Step1: Reverse 0-%d -> ", k-1);
+            display(arr);
+
+            reverse(arr, k, N-1);
+            printf("Step2: Reverse %d-9 -> ", k);
+            display(arr);
+
+            reverse(arr, 0, N-1);
+            printf("Step3: Reverse all -> ");
+            display(arr);
+        }
+        else
+        {
+            reverse(arr, 0, N-1);
+            printf("Step1: Reverse all -> ");
+            display(arr);
+
+            reverse(arr, 0, k-1);
+            printf("Step2: Reverse 0-%d -> ", k-1);
+            display(arr);
+
+            reverse(arr, k, N-1);
+            printf("Step3: Reverse %d-9 -> ", k);
+            display(arr);
+        }
+
+        rotatedSum = 0;
+
+        for(i = 0; i < N; i++)
+            rotatedSum += arr[i];
+
+        printf("Rotated Array: ");
+        display(arr);
+
+        printf("Sum difference: %d\n",
+               originalSum - rotatedSum);
+    }
+
+    return 0;
+}
