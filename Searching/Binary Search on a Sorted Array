@@ -1,0 +1,98 @@
+#include <stdio.h>
+
+int main()
+{
+    int arr[15], i, j, temp;
+    int target, low, high, mid;
+    int comparisons = 0, found = 0;
+
+    printf("Enter 15 numbers: ");
+
+    for (i = 0; i < 15; i++)
+    {
+        scanf("%d", &arr[i]);
+    }
+
+    // Sorting the array using Bubble Sort
+    for (i = 0; i < 15 - 1; i++)
+    {
+        for (j = 0; j < 15 - i - 1; j++)
+        {
+            if (arr[j] > arr[j + 1])
+            {
+                temp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
+            }
+        }
+    }
+
+    printf("Sorted array: ");
+
+    for (i = 0; i < 15; i++)
+    {
+        printf("%d ", arr[i]);
+    }
+
+    printf("\nEnter target: ");
+    scanf("%d", &target);
+
+    low = 0;
+    high = 14;
+
+    printf("Binary Search Iterations:\n");
+
+    while (low <= high)
+    {
+        mid = (low + high) / 2;
+        comparisons++;
+
+        printf("low=%d, high=%d, mid=%d, arr[%d]=%d\n",
+               low, high, mid, mid, arr[mid]);
+
+        if (arr[mid] == target)
+        {
+            found = 1;
+            break;
+        }
+        else if (arr[mid] < target)
+        {
+            low = mid + 1;
+        }
+        else
+        {
+            high = mid - 1;
+        }
+    }
+
+    if (found)
+    {
+        printf("Found at index %d (1-based: %d)\n",
+               mid, mid + 1);
+    }
+    else
+    {
+        printf("Target not found\n");
+    }
+
+    printf("Comparisons: %d\n", comparisons);
+
+    // Verify array is sorted after search
+    int sorted = 1;
+
+    for (i = 0; i < 14; i++)
+    {
+        if (arr[i] > arr[i + 1])
+        {
+            sorted = 0;
+            break;
+        }
+    }
+
+    if (sorted)
+        printf("Array remains sorted: Yes\n");
+    else
+        printf("Array remains sorted: No\n");
+
+    return 0;
+}
