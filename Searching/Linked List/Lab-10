@@ -1,0 +1,124 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node
+{
+    int coeff;
+    int exp;
+    struct Node *next;
+};
+
+struct Node *createNode(int coeff, int exp)
+{
+    struct Node *newNode = malloc(sizeof(struct Node));
+
+    newNode->coeff = coeff;
+    newNode->exp = exp;
+    newNode->next = NULL;
+
+    return newNode;
+}
+
+struct Node *addPolynomial(struct Node *p1, struct Node *p2)
+{
+    struct Node *result = NULL, *tail = NULL;
+
+    while (p1 != NULL && p2 != NULL)
+    {
+        struct Node *newNode;
+
+        if (p1->exp == p2->exp)
+        {
+            newNode = createNode(p1->coeff + p2->coeff, p1->exp);
+            p1 = p1->next;
+            p2 = p2->next;
+        }
+        else if (p1->exp > p2->exp)
+        {
+            newNode = createNode(p1->coeff, p1->exp);
+            p1 = p1->next;
+        }
+        else
+        {
+            newNode = createNode(p2->coeff, p2->exp);
+            p2 = p2->next;
+        }
+
+        if (result == NULL)
+        {
+            result = tail = newNode;
+        }
+        else
+        {
+            tail->next = newNode;
+            tail = newNode;
+        }
+    }
+
+    while (p1 != NULL)
+    {
+        struct Node *newNode = createNode(p1->coeff, p1->exp);
+        tail->next = newNode;
+        tail = newNode;
+        p1 = p1->next;
+    }
+
+    while (p2 != NULL)
+    {
+        struct Node *newNode = createNode(p2->coeff, p2->exp);
+        tail->next = newNode;
+        tail = newNode;
+        p2 = p2->next;
+    }
+
+    return result;
+}
+
+void display(struct Node *head)
+{
+    while (head != NULL)
+    {
+        printf("%d", head->coeff);
+
+        if (head->exp != 0)
+            printf("x");
+
+        if (head->exp > 1)
+            printf("^%d", head->exp);
+
+        if (head->next != NULL)
+            printf(" + ");
+
+        head = head->next;
+    }
+
+    printf("\n");
+}
+
+int main()
+{
+    struct Node *p1, *p2, *result;
+
+    // Polynomial 1: 5x^2 + 3x + 2
+    p1 = createNode(5, 2);
+    p1->next = createNode(3, 1);
+    p1->next->next = createNode(2, 0);
+
+    // Polynomial 2: 4x^2 + 6x + 1
+    p2 = createNode(4, 2);
+    p2->next = createNode(6, 1);
+    p2->next->next = createNode(1, 0);
+
+    printf("Polynomial 1: ");
+    display(p1);
+
+    printf("Polynomial 2: ");
+    display(p2);
+
+    result = addPolynomial(p1, p2);
+
+    printf("Resultant Polynomial: ");
+    display(result);
+
+    return 0;
+}
