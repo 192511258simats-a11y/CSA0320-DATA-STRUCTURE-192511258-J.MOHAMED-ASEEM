@@ -1,0 +1,96 @@
+#include <stdio.h>
+
+int main()
+{
+    int arr[50], n, i, j, temp;
+    int first300 = -1, last150 = -1;
+
+    printf("Enter n: ");
+    scanf("%d", &n);
+
+    if (n <= 0 || n > 50)
+    {
+        printf("Invalid size!");
+        return 0;
+    }
+
+    printf("Enter page counts: ");
+
+    for (i = 0; i < n; i++)
+    {
+        scanf("%d", &arr[i]);
+    }
+
+    // Sorting using Bubble Sort
+    for (i = 0; i < n - 1; i++)
+    {
+        for (j = 0; j < n - i - 1; j++)
+        {
+            if (arr[j] > arr[j + 1])
+            {
+                temp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
+            }
+        }
+    }
+
+    printf("Sorted page counts: ");
+
+    for (i = 0; i < n; i++)
+    {
+        printf("%d ", arr[i]);
+    }
+
+    // Linear Search: First book >= 300
+    for (i = 0; i < n; i++)
+    {
+        if (arr[i] >= 300)
+        {
+            first300 = i;
+            break;
+        }
+    }
+
+    // Linear Search: Last book <= 150
+    for (i = 0; i < n; i++)
+    {
+        if (arr[i] <= 150)
+        {
+            last150 = i;
+        }
+    }
+
+    printf("\n");
+
+    if (first300 != -1)
+        printf("First >=300: index %d (%d)\n",
+               first300, arr[first300]);
+    else
+        printf("First >=300: Not found\n");
+
+    if (last150 != -1)
+        printf("Last <=150: index %d (%d)\n",
+               last150, arr[last150]);
+    else
+        printf("Last <=150: Not found\n");
+
+    // Validate sorted order
+    int sorted = 1;
+
+    for (i = 0; i < n - 1; i++)
+    {
+        if (arr[i] > arr[i + 1])
+        {
+            sorted = 0;
+            break;
+        }
+    }
+
+    if (sorted)
+        printf("Array sorted: Yes\n");
+    else
+        printf("Array sorted: No\n");
+
+    return 0;
+}
