@@ -1,0 +1,152 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node
+{
+    int data;
+    struct Node *next;
+};
+
+struct Node *head = NULL;
+
+void display()
+{
+    struct Node *temp = head;
+
+    while (temp != NULL)
+    {
+        printf("%d -> ", temp->data);
+        temp = temp->next;
+    }
+
+    printf("NULL\n");
+}
+
+void deleteBeginning()
+{
+    if (head == NULL)
+    {
+        printf("List is empty\n");
+        return;
+    }
+
+    struct Node *temp = head;
+    head = head->next;
+    free(temp);
+}
+
+void deleteEnd()
+{
+    if (head == NULL)
+    {
+        printf("List is empty\n");
+        return;
+    }
+
+    if (head->next == NULL)
+    {
+        free(head);
+        head = NULL;
+        return;
+    }
+
+    struct Node *temp = head;
+
+    while (temp->next->next != NULL)
+    {
+        temp = temp->next;
+    }
+
+    free(temp->next);
+    temp->next = NULL;
+}
+
+void deletePosition(int pos)
+{
+    if (head == NULL)
+    {
+        printf("List is empty\n");
+        return;
+    }
+
+    if (pos == 1)
+    {
+        deleteBeginning();
+        return;
+    }
+
+    struct Node *temp = head;
+
+    for (int i = 1; i < pos - 1 && temp != NULL; i++)
+    {
+        temp = temp->next;
+    }
+
+    if (temp == NULL || temp->next == NULL)
+    {
+        printf("Invalid position\n");
+        return;
+    }
+
+    struct Node *del = temp->next;
+    temp->next = del->next;
+    free(del);
+}
+
+int main()
+{
+    int choice, pos;
+    int values[] = {10, 20, 30, 40};
+
+    for (int i = 0; i < 4; i++)
+    {
+        struct Node *newNode = malloc(sizeof(struct Node));
+        newNode->data = values[i];
+        newNode->next = NULL;
+
+        if (head == NULL)
+            head = newNode;
+        else
+        {
+            struct Node *temp = head;
+            while (temp->next != NULL)
+                temp = temp->next;
+
+            temp->next = newNode;
+        }
+    }
+
+    printf("List: ");
+    display();
+
+    printf("1. Delete Beginning\n");
+    printf("2. Delete End\n");
+    printf("3. Delete Position\n");
+    printf("Enter choice: ");
+    scanf("%d", &choice);
+
+    switch (choice)
+    {
+        case 1:
+            deleteBeginning();
+            break;
+
+        case 2:
+            deleteEnd();
+            break;
+
+        case 3:
+            printf("Enter position: ");
+            scanf("%d", &pos);
+            deletePosition(pos);
+            break;
+
+        default:
+            printf("Invalid choice\n");
+    }
+
+    printf("Updated List: ");
+    display();
+
+    return 0;
+}
