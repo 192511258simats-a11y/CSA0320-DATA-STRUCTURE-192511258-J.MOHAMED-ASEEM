@@ -1,0 +1,104 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node
+{
+    int data;
+    struct Node *next;
+};
+
+struct Node *createNode(int data)
+{
+    struct Node *newNode = malloc(sizeof(struct Node));
+
+    newNode->data = data;
+    newNode->next = NULL;
+
+    return newNode;
+}
+
+struct Node *merge(struct Node *a, struct Node *b)
+{
+    struct Node *head = NULL, *tail = NULL;
+
+    while (a != NULL && b != NULL)
+    {
+        struct Node *newNode;
+
+        if (a->data < b->data)
+        {
+            newNode = createNode(a->data);
+            a = a->next;
+        }
+        else
+        {
+            newNode = createNode(b->data);
+            b = b->next;
+        }
+
+        if (head == NULL)
+        {
+            head = tail = newNode;
+        }
+        else
+        {
+            tail->next = newNode;
+            tail = newNode;
+        }
+    }
+
+    while (a != NULL)
+    {
+        struct Node *newNode = createNode(a->data);
+        tail->next = newNode;
+        tail = newNode;
+        a = a->next;
+    }
+
+    while (b != NULL)
+    {
+        struct Node *newNode = createNode(b->data);
+        tail->next = newNode;
+        tail = newNode;
+        b = b->next;
+    }
+
+    return head;
+}
+
+void display(struct Node *head)
+{
+    while (head != NULL)
+    {
+        printf("%d -> ", head->data);
+        head = head->next;
+    }
+
+    printf("NULL\n");
+}
+
+int main()
+{
+    struct Node *a, *b, *result;
+
+    a = createNode(10);
+    a->next = createNode(30);
+    a->next->next = createNode(50);
+
+    b = createNode(20);
+    b->next = createNode(40);
+    b->next->next = createNode(60);
+
+    printf("List 1: ");
+    display(a);
+
+    printf("List 2: ");
+    display(b);
+
+    result = merge(a, b);
+
+    printf("Merged List: ");
+    display(result);
+
+    return 0;
+}
