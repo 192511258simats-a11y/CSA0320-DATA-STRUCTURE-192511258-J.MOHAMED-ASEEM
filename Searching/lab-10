@@ -1,0 +1,116 @@
+#include <stdio.h>
+
+int main()
+{
+    int arr[50], n, i, j, temp;
+    int low, high, mid;
+    int first30 = -1, last25 = -1;
+
+    printf("Enter n: ");
+    scanf("%d", &n);
+
+    if (n <= 0 || n > 50)
+    {
+        printf("Invalid size!\n");
+        return 0;
+    }
+
+    printf("Enter temperatures: ");
+
+    for (i = 0; i < n; i++)
+    {
+        scanf("%d", &arr[i]);
+    }
+
+    // Sorting using Bubble Sort
+    for (i = 0; i < n - 1; i++)
+    {
+        for (j = 0; j < n - i - 1; j++)
+        {
+            if (arr[j] > arr[j + 1])
+            {
+                temp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
+            }
+        }
+    }
+
+    printf("Sorted temperatures: ");
+
+    for (i = 0; i < n; i++)
+    {
+        printf("%d ", arr[i]);
+    }
+
+    // Binary Search: First temperature >= 30
+    low = 0;
+    high = n - 1;
+
+    while (low <= high)
+    {
+        mid = (low + high) / 2;
+
+        if (arr[mid] >= 30)
+        {
+            first30 = mid;
+            high = mid - 1;
+        }
+        else
+        {
+            low = mid + 1;
+        }
+    }
+
+    // Binary Search: Last temperature <= 25
+    low = 0;
+    high = n - 1;
+
+    while (low <= high)
+    {
+        mid = (low + high) / 2;
+
+        if (arr[mid] <= 25)
+        {
+            last25 = mid;
+            low = mid + 1;
+        }
+        else
+        {
+            high = mid - 1;
+        }
+    }
+
+    printf("\n");
+
+    if (first30 != -1)
+        printf("First >=30: index %d (%d)\n",
+               first30, arr[first30]);
+    else
+        printf("First >=30: Not found\n");
+
+    if (last25 != -1)
+        printf("Last <=25: index %d (%d)\n",
+               last25, arr[last25]);
+    else
+        printf("Last <=25: Not found\n");
+
+    // Validate sorted order
+    int sorted = 1;
+
+    for (i = 0; i < n - 1; i++)
+    {
+        if (arr[i] > arr[i + 1])
+        {
+            sorted = 0;
+            break;
+        }
+    }
+
+    if (sorted)
+        printf("Array sorted: Yes\n");
+    else
+        printf("Array sorted: No\n");
+
+    return 0;
+}
