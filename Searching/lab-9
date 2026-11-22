@@ -1,0 +1,96 @@
+#include <stdio.h>
+
+int main()
+{
+    int arr[50], n, i, j, temp;
+    int first500 = -1, last200 = -1;
+
+    printf("Enter n: ");
+    scanf("%d", &n);
+
+    if (n <= 0 || n > 50)
+    {
+        printf("Invalid size!\n");
+        return 0;
+    }
+
+    printf("Enter product prices: ");
+
+    for (i = 0; i < n; i++)
+    {
+        scanf("%d", &arr[i]);
+    }
+
+    // Sort using Bubble Sort
+    for (i = 0; i < n - 1; i++)
+    {
+        for (j = 0; j < n - i - 1; j++)
+        {
+            if (arr[j] > arr[j + 1])
+            {
+                temp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
+            }
+        }
+    }
+
+    printf("Sorted prices: ");
+
+    for (i = 0; i < n; i++)
+    {
+        printf("%d ", arr[i]);
+    }
+
+    // Linear Search: First price >= 500
+    for (i = 0; i < n; i++)
+    {
+        if (arr[i] >= 500)
+        {
+            first500 = i;
+            break;
+        }
+    }
+
+    // Linear Search: Last price <= 200
+    for (i = 0; i < n; i++)
+    {
+        if (arr[i] <= 200)
+        {
+            last200 = i;
+        }
+    }
+
+    printf("\n");
+
+    if (first500 != -1)
+        printf("First >=500: index %d (%d)\n",
+               first500, arr[first500]);
+    else
+        printf("First >=500: Not found\n");
+
+    if (last200 != -1)
+        printf("Last <=200: index %d (%d)\n",
+               last200, arr[last200]);
+    else
+        printf("Last <=200: Not found\n");
+
+    // Validate sorted order
+    int sorted = 1;
+
+    for (i = 0; i < n - 1; i++)
+    {
+        if (arr[i] > arr[i + 1])
+        {
+            sorted = 0;
+            break;
+        }
+    }
+
+    if (sorted)
+        printf("Array sorted: Yes\n");
+    else
+        printf("Array sorted: No\n");
+
+    return 0;
+}
